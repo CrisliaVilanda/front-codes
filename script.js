@@ -1,11 +1,17 @@
 // Basic Calendar Logic
 
 const calendarGrid = document.getElementById('calendarGrid');
+const calendarGrid2 = document.getElementById('calendarGrid2');
 const currentMonthYear = document.getElementById('currentMonthYear');
+const currentMonthYear2 = document.getElementById('currentMonthYear2');
 const prevMonthBtn = document.getElementById('prevMonth');
 const nextMonthBtn = document.getElementById('nextMonth');
+const prevMonthBtn2 = document.getElementById('prevMonth2');
+const nextMonthBtn2 = document.getElementById('nextMonth2');
 
 let currentDate = new Date();
+let currentDate2 = new Date();
+currentDate2.setMonth(currentDate2.getMonth() + 1); // Segunda agenda começa um mês à frente
 let schedules = JSON.parse(localStorage.getItem('schedules')) || {};
 let activities = JSON.parse(localStorage.getItem('activities')) || {};
 let notes = JSON.parse(localStorage.getItem('notes')) || {};
@@ -71,16 +77,17 @@ saveScheduleBtn.addEventListener('click', () => {
   localStorage.setItem('schedules', JSON.stringify(schedules));
   scheduleForm.classList.remove('was-validated');
   scheduleModal.hide();
-  renderCalendar(currentDate);
+  renderCalendar(currentDate, calendarGrid, currentMonthYear);
+  renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
 });
 
-function renderCalendar(date) {
+function renderCalendar(date, gridElement, monthYearElement) {
   const year = date.getFullYear();
   const month = date.getMonth();
 
   // Set header text
   const options = { month: 'long', year: 'numeric' };
-  currentMonthYear.textContent = new Intl.DateTimeFormat('pt-BR', options).format(date);
+  monthYearElement.textContent = new Intl.DateTimeFormat('pt-BR', options).format(date);
 
   // First day of the month
   const firstDay = new Date(year, month, 1);
@@ -141,17 +148,27 @@ function renderCalendar(date) {
     days += `<div class="calendar-day other-month"><span class="day-number">${j}</span></div>`;
   }
 
-  calendarGrid.innerHTML = days;
+  gridElement.innerHTML = days;
 }
 
 prevMonthBtn.addEventListener('click', () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar(currentDate);
+  renderCalendar(currentDate, calendarGrid, currentMonthYear);
 });
 
 nextMonthBtn.addEventListener('click', () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar(currentDate);
+  renderCalendar(currentDate, calendarGrid, currentMonthYear);
+});
+
+prevMonthBtn2.addEventListener('click', () => {
+  currentDate2.setMonth(currentDate2.getMonth() - 1);
+  renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
+});
+
+nextMonthBtn2.addEventListener('click', () => {
+  currentDate2.setMonth(currentDate2.getMonth() + 1);
+  renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
 });
 
 // Dropdown event listeners
@@ -192,7 +209,8 @@ saveNoteBtn.addEventListener('click', () => {
   localStorage.setItem('notes', JSON.stringify(notes));
   noteForm.classList.remove('was-validated');
   noteModal.hide();
-  renderCalendar(currentDate);
+  renderCalendar(currentDate, calendarGrid, currentMonthYear);
+  renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
 });
 
 // Salvar Atividade Extrajudicial
@@ -223,8 +241,10 @@ saveActivityBtn.addEventListener('click', () => {
   localStorage.setItem('activities', JSON.stringify(activities));
   activityForm.classList.remove('was-validated');
   activityModal.hide();
-  renderCalendar(currentDate);
+  renderCalendar(currentDate, calendarGrid, currentMonthYear);
+  renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
 });
 
 // Initial render
-renderCalendar(currentDate);
+renderCalendar(currentDate, calendarGrid, currentMonthYear);
+renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);

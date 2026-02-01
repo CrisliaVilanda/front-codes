@@ -36,30 +36,60 @@
 
     <div class="container">
         <div class="row mb-3">
-            <div class="col d-flex justify-content-between align-items-center">
-                <button class="btn btn-outline-secondary" id="prevMonth"><i class="bi bi-chevron-left"></i> Anterior</button>
-                <h2 class="h4 mb-0 fw-bold text-capitalize" id="currentMonthYear">Janeiro 2026</h2>
-                <button class="btn btn-outline-secondary" id="nextMonth">Próximo <i class="bi bi-chevron-right"></i></button>
+            <div class="col-lg-6">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-outline-secondary" id="prevMonth"><i class="bi bi-chevron-left"></i> Anterior</button>
+                    <h3 class="h5 mb-0 fw-bold text-capitalize" id="currentMonthYear">Janeiro 2026</h3>
+                    <button class="btn btn-outline-secondary" id="nextMonth">Próximo <i class="bi bi-chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-outline-secondary" id="prevMonth2"><i class="bi bi-chevron-left"></i> Anterior</button>
+                    <h3 class="h5 mb-0 fw-bold text-capitalize" id="currentMonthYear2">Fevereiro 2026</h3>
+                    <button class="btn btn-outline-secondary" id="nextMonth2">Próximo <i class="bi bi-chevron-right"></i></button>
+                </div>
             </div>
         </div>
 
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-0">
-                <div class="calendar-header d-flex text-center bg-light py-2 fw-bold text-muted border-bottom">
-                    <div class="flex-fill">Dom</div>
-                    <div class="flex-fill">Seg</div>
-                    <div class="flex-fill">Ter</div>
-                    <div class="flex-fill">Qua</div>
-                    <div class="flex-fill">Qui</div>
-                    <div class="flex-fill">Sex</div>
-                    <div class="flex-fill">Sab</div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-0">
+                        <div class="calendar-header d-flex text-center bg-light py-2 fw-bold text-muted border-bottom">
+                            <div class="flex-fill">Dom</div>
+                            <div class="flex-fill">Seg</div>
+                            <div class="flex-fill">Ter</div>
+                            <div class="flex-fill">Qua</div>
+                            <div class="flex-fill">Qui</div>
+                            <div class="flex-fill">Sex</div>
+                            <div class="flex-fill">Sab</div>
+                        </div>
+                        <div id="calendarGrid" class="calendar-grid">
+                            <!-- Calendar days will be generated here -->
+                        </div>
+                    </div>
                 </div>
-                <div id="calendarGrid" class="calendar-grid">
-                    <!-- Calendar days will be generated here -->
+            </div>
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-0">
+                        <div class="calendar-header d-flex text-center bg-light py-2 fw-bold text-muted border-bottom">
+                            <div class="flex-fill">Dom</div>
+                            <div class="flex-fill">Seg</div>
+                            <div class="flex-fill">Ter</div>
+                            <div class="flex-fill">Qua</div>
+                            <div class="flex-fill">Qui</div>
+                            <div class="flex-fill">Sex</div>
+                            <div class="flex-fill">Sab</div>
+                        </div>
+                        <div id="calendarGrid2" class="calendar-grid">
+                            <!-- Calendar days will be generated here -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Modal Novo Agendamento -->
     <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">

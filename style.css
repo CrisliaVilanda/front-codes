@@ -9,10 +9,11 @@
 
 .calendar-day {
     background-color: white;
-    min-height: 120px;
-    padding: 10px;
+    min-height: 100px;
+    padding: 8px;
     position: relative;
     transition: background-color 0.2s;
+    font-size: 0.9rem;
 }
 
 .calendar-day:hover {
@@ -126,4 +127,26 @@
 
 .note-badge:hover {
     background-color: #ffe8a1;
+}
+
+/* Responsive layout for two calendars */
+@media (max-width: 1200px) {
+    .calendar-day {
+        min-height: 90px;
+        padding: 6px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-day {
+        min-height: 80px;
+        padding: 5px;
+        font-size: 0.8rem;
+    }
+    
+    .schedule-badge, .activity-badge, .note-badge {
+        font-size: 0.6rem;
+        padding: 2px 3px;
+    }
 }
