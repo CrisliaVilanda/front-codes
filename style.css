@@ -1,0 +1,129 @@
+/* Custom styles for Agenda App */
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #dee2e6; /* Border color */
+    gap: 1px; /* Creates the grid lines */
+}
+
+.calendar-day {
+    background-color: white;
+    min-height: 120px;
+    padding: 10px;
+    position: relative;
+    transition: background-color 0.2s;
+}
+
+.calendar-day:hover {
+    background-color: #f8f9fa;
+}
+
+.calendar-day.other-month {
+    background-color: #fcfcfc;
+    color: #adb5bd;
+}
+
+.calendar-day.today {
+    background-color: #e8f0fe;
+}
+
+.day-number {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.calendar-day.today .day-number {
+    color: #0d6efd;
+}
+
+.event-badge {
+    font-size: 0.75rem;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.schedules-container {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.schedule-badge {
+    font-size: 0.7rem;
+    padding: 4px 6px;
+    border-radius: 3px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.schedule-badge:hover {
+    background-color: #c3e6cb;
+}
+
+.activities-container {
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.activity-badge {
+    font-size: 0.65rem;
+    padding: 3px 5px;
+    border-radius: 3px;
+    background-color: #cfe2ff;
+    color: #084298;
+    border: 1px solid #b6d4fe;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.activity-badge:hover {
+    background-color: #b6d4fe;
+}
+
+.notes-container {
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.note-badge {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+    border-radius: 3px;
+    background-color: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffeeba;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.note-badge:hover {
+    background-color: #ffe8a1;
+}
