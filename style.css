@@ -173,3 +173,23 @@
   #eventDetails .btn-group { gap: .25rem; }
 }
 
+/* hearing styles appended */
+.hearings-container { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+.hearing-badge {
+  font-size: 0.72rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background-color: #f0f7ff;
+  color: #0b5ed7;
+  border: 1px solid #cfe0ff;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.hearing-badge:hover { background-color: #e2f0ff; }
+.hearing-badge.hearing-done { background-color: #eef9f0; color: #1e6b2b; border-color: #d4edd6; text-decoration: line-through; opacity: 0.95; }
+
+

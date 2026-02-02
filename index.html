@@ -21,10 +21,11 @@
                 <button class="btn btn-success" id="newScheduleBtn">
                     <i class="bi bi-plus-lg me-1"></i> Novo Agendamento
                 </button>
+                <button class="btn btn-outline-primary" id="newHearingBtn"><i class="bi bi-gavel me-1"></i> Cadastrar audiência</button>
                 <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="createEventDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-plus-lg me-1"></i>Incluir eventos extrajudiciais/observações
-                    </button>
+                        <i class="bi bi-plus-lg me-1"></i> Criar Evento
+                    </button> 
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="createEventDropdown">
                         <li><a class="dropdown-item" href="#" id="newEventSimple"><i class="bi bi-file-earmark-text me-2"></i>Agendar atividade Extrajud.</a></li>
                         <li><a class="dropdown-item" href="#" id="newEventDetailed"><i class="bi bi-pin-angle me-2"></i>Adicionar observações e imprevistos</a></li>
@@ -37,6 +38,7 @@
     <div class="container">
         <div class="row mb-3">
             <div class="col-lg-6">
+                <h3 class="h5 mb-3 fw-bold">Meus Atendimentos</h3>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <button class="btn btn-outline-secondary" id="prevMonth"><i class="bi bi-chevron-left"></i> Anterior</button>
                     <h3 class="h5 mb-0 fw-bold text-capitalize" id="currentMonthYear">Janeiro 2026</h3>
@@ -44,6 +46,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
+                <h3 class="h5 mb-3 fw-bold">Minhas Audiências</h3>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <button class="btn btn-outline-secondary" id="prevMonth2"><i class="bi bi-chevron-left"></i> Anterior</button>
                     <h3 class="h5 mb-0 fw-bold text-capitalize" id="currentMonthYear2">Fevereiro 2026</h3>
@@ -146,6 +149,12 @@
                                 <option value="Lucas Ferreira">Lucas Ferreira</option>
                             </select>
                         </div>
+
+                        <div class="mb-3">
+                          <label for="scheduleProcess" class="form-label">Número do processo (opcional)</label>
+                          <input type="text" class="form-control" id="scheduleProcess" placeholder="0000000-00.0000.0.00.0000">
+                          <div class="form-text">Campo opcional — informe o número do processo se houver.</div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -202,6 +211,54 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Modal Cadastrar Audiência -->
+    <div class="modal fade" id="hearingModal" tabindex="-1" aria-labelledby="hearingModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="hearingModalLabel"><i class="bi bi-gavel me-2"></i>Cadastrar Audiência</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="hearingForm">
+              <div class="mb-3">
+                <label for="hearingDate" class="form-label">Data <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="hearingDate" required>
+              </div>
+              <div class="mb-3">
+                <label for="hearingTime" class="form-label">Hora</label>
+                <input type="time" class="form-control" id="hearingTime">
+              </div>
+
+
+
+              <div class="mb-3">
+                <label for="hearingDefender" class="form-label">Nome do Defensor</label>
+                <input type="text" class="form-control" id="hearingDefender" placeholder="Digite o nome do defensor">
+              </div>
+              <div class="mb-3">
+                <label for="hearingProcess" class="form-label">Número do processo <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="hearingProcess" placeholder="0000000-00.0000.0.00.0000" required>
+              </div>
+              <div class="mb-3">
+                <label for="hearingDescription" class="form-label">Descrição</label>
+                <textarea class="form-control" id="hearingDescription" rows="2" placeholder="Informações adicionais"></textarea>
+              </div>
+
+              <div class="alert alert-warning small mb-3" role="alert">
+                <strong>Atenção:</strong> Esta atividade será cadastrada com status de <em>a realizar</em>.
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="saveHearingBtn"><i class="bi bi-check-circle me-1"></i>Salvar</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal Nota / Observações e Imprevistos -->
