@@ -23,10 +23,10 @@
                 </button>
                 <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="createEventDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-plus-lg me-1"></i> Criar Evento
+                        <i class="bi bi-plus-lg me-1"></i>Incluir eventos extrajudiciais/observações
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="createEventDropdown">
-                        <li><a class="dropdown-item" href="#" id="newEventSimple"><i class="bi bi-file-earmark-text me-2"></i>Nova Atividade Extrajud.</a></li>
+                        <li><a class="dropdown-item" href="#" id="newEventSimple"><i class="bi bi-file-earmark-text me-2"></i>Agendar atividade Extrajud.</a></li>
                         <li><a class="dropdown-item" href="#" id="newEventDetailed"><i class="bi bi-pin-angle me-2"></i>Adicionar observações e imprevistos</a></li>
                     </ul>
                 </div>
@@ -86,6 +86,28 @@
                         <div id="calendarGrid2" class="calendar-grid">
                             <!-- Calendar days will be generated here -->
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalhes do evento (exibido ao clicar em um badge) -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div id="eventDetails" class="card shadow-sm border-0 d-none" aria-live="polite">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-0" id="eventDetailsTitle">Detalhes do evento</h5>
+                            <small class="text-muted" id="eventDetailsDate"></small>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-secondary btn-sm" id="closeDetailsBtn">Fechar</button>
+                            <button class="btn btn-outline-primary btn-sm d-none" id="saveStatusBtn" aria-hidden="true"><i class="bi bi-pencil-square me-1"></i> Salvar status</button>
+                            <button class="btn btn-danger btn-sm" id="deleteEventBtn"><i class="bi bi-trash"></i> Excluir</button>
+                        </div>
+                    </div>
+                    <div class="card-body" id="eventDetailsBody">
+                        <div class="text-muted">Clique em um evento na agenda para ver os detalhes aqui.</div>
                     </div>
                 </div>
             </div>

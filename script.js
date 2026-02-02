@@ -117,17 +117,17 @@ function renderCalendar(date, gridElement, monthYearElement) {
     const daySchedules = schedules[dateStr] || [];
     const dayActivities = activities[dateStr] || [];
     
-    let scheduleHTML = daySchedules.map(schedule => 
-      `<div class="schedule-badge"><i class="bi bi-calendar-check"></i> ${schedule.time} - ${schedule.defender}</div>`
+    let scheduleHTML = daySchedules.map((schedule, idx) => 
+      `<div class="schedule-badge" data-type="schedule" data-date="${dateStr}" data-index="${idx}" role="button" tabindex="0" aria-label="Agendamento ${schedule.time} ${schedule.defender}"><i class="bi bi-calendar-check"></i> ${schedule.time} - ${schedule.defender}</div>`
     ).join('');
 
-    let activityHTML = dayActivities.map(activity =>
-      `<div class="activity-badge" title="${activity.description}"><i class="bi bi-file-earmark-text"></i> ${activity.species} - ${activity.nucleo}</div>`
+    let activityHTML = dayActivities.map((activity, idx) =>
+      `<div class="activity-badge${activity.status === 'realizada' ? ' activity-done' : ''}" data-type="activity" data-date="${dateStr}" data-index="${idx}" role="button" tabindex="0" title="${activity.description} - status: ${activity.status || 'a realizar'}" aria-label="Atividade ${activity.species} ${activity.nucleo}"><i class="bi bi-file-earmark-text"></i> ${activity.species} - ${activity.nucleo}${activity.status ? ` <small class="badge bg-light text-dark ms-1" aria-hidden="true">${activity.status}</small>` : ''}</div>`
     ).join('');
 
     const dayNotes = notes[dateStr] || [];
-    let noteHTML = dayNotes.map(n =>
-      `<div class="note-badge" title="${n.description}"><i class="bi bi-pin-angle-fill"></i> ${n.time ? n.time + ' - ' : ''}${n.title}</div>`
+    let noteHTML = dayNotes.map((n, idx) =>
+      `<div class="note-badge" data-type="note" data-date="${dateStr}" data-index="${idx}" role="button" tabindex="0" title="${n.description}" aria-label="Nota ${n.title}"><i class="bi bi-pin-angle-fill"></i> ${n.time ? n.time + ' - ' : ''}${n.title}</div>`
     ).join('');
 
     days += `<div class="calendar-day ${isToday ? 'today' : ''}" data-date="${dateStr}">
@@ -135,7 +135,7 @@ function renderCalendar(date, gridElement, monthYearElement) {
       <div class="schedules-container">${scheduleHTML}</div>
       <div class="notes-container">${noteHTML}</div>
       <div class="activities-container">${activityHTML}</div>
-    </div>`;
+    </div>`; 
   }
 
   // Next month days
@@ -244,6 +244,194 @@ saveActivityBtn.addEventListener('click', () => {
   renderCalendar(currentDate, calendarGrid, currentMonthYear);
   renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
 });
+
+// --- Painel de detalhes: seleção, visualização e exclusão de eventos ---
+const eventDetails = document.getElementById('eventDetails');
+const eventDetailsTitle = document.getElementById('eventDetailsTitle');
+const eventDetailsDate = document.getElementById('eventDetailsDate');
+const eventDetailsBody = document.getElementById('eventDetailsBody');
+const closeDetailsBtn = document.getElementById('closeDetailsBtn');
+const deleteEventBtn = document.getElementById('deleteEventBtn');
+const saveStatusBtn = document.getElementById('saveStatusBtn');
+
+let currentDetail = null; // { type, date, index }
+
+function showActivityStatusControl(item) {
+  // retorna HTML do select (usado apenas para atividades)
+  const status = item && item.status ? item.status : 'a realizar';
+  return `
+    <div class="mb-3 status-control">
+      <label for="activityStatusSelect" class="form-label">Status</label>
+      <div class="d-flex gap-2 align-items-center">
+        <select id="activityStatusSelect" class="form-select form-select-sm" style="max-width:200px">
+          <option value="a realizar" ${status === 'a realizar' ? 'selected' : ''}>a realizar</option>
+          <option value="realizada" ${status === 'realizada' ? 'selected' : ''}>realizada</option>
+        </select>
+        <small class="text-muted">Atualize e clique em "Salvar status"</small>
+      </div>
+    </div>
+  `;
+}
+
+function saveActivityStatus() {
+  if (!currentDetail || currentDetail.type !== 'activity') return;
+  const sel = document.getElementById('activityStatusSelect');
+  if (!sel) return;
+  const newStatus = sel.value;
+  const { date, idx } = currentDetail;
+  const item = (activities[date] || [])[idx];
+  if (!item) return;
+  item.status = newStatus;
+  localStorage.setItem('activities', JSON.stringify(activities));
+  // re-renderiza e atualiza o painel
+  renderCalendar(currentDate, calendarGrid, currentMonthYear);
+  renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
+  showEventDetails('activity', date, idx);
+  // feedback rápido
+  const alertEl = document.createElement('div');
+  alertEl.className = 'alert alert-success mt-2 mb-0 py-1';
+  alertEl.role = 'status';
+  alertEl.textContent = 'Status atualizado.';
+  eventDetailsBody.prepend(alertEl);
+  setTimeout(() => alertEl.remove(), 1800);
+}
+
+// atualiza showEventDetails (branch 'activity') para incluir o controle de status e mostrar o botão
+function showEventDetails(type, date, idx) {
+  currentDetail = { type, date, idx };
+  eventDetailsTitle.textContent = (type === 'schedule') ? 'Agendamento' : (type === 'activity') ? 'Atividade' : 'Nota';
+  eventDetailsDate.textContent = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'full' }).format(new Date(date));
+
+  let html = '';
+  if (type === 'schedule') {
+    const item = (schedules[date] || [])[idx];
+    if (!item) { html = '<div class="text-muted">Agendamento não encontrado.</div>'; }
+    else {
+      html = `
+        <div class="mb-2"><strong>Hora:</strong> ${item.time || '-'} </div>
+        <div class="mb-2"><strong>Defensor:</strong> ${item.defender || '-'} </div>
+        <div class="mb-2"><strong>Assistido:</strong> ${item.assisted || '-'} </div>
+      `;
+    }
+    // esconde controle de status quando não for atividade
+    saveStatusBtn.classList.add('d-none');
+    saveStatusBtn.setAttribute('aria-hidden', 'true');
+  } else if (type === 'activity') {
+    const item = (activities[date] || [])[idx];
+    if (!item) { html = '<div class="text-muted">Atividade não encontrada.</div>'; }
+    else {
+      // conteúdo com botão 'Visualizar' alinhado ao lado oposto
+      html = `
+        <div class="d-flex justify-content-between align-items-start">
+          <div style="min-width:0; flex:1;">
+            ${showActivityStatusControl(item)}
+            <div class="mb-2"><strong>Espécie:</strong> ${item.species || '-'} </div>
+            <div class="mb-2"><strong>Titularidade:</strong> ${item.titularity || '-'} </div>
+            <div class="mb-2"><strong>Núcleo:</strong> ${item.nucleo || '-'} </div>
+            <div class="mb-2"><strong>Descrição:</strong> ${item.description || '-'} </div>
+          </div>
+          <div class="ms-3 text-end">
+            <a href="#" id="viewActivityLink" class="btn btn-link btn-sm view-activity-link" aria-label="Visualizar atividade">Visualizar</a>
+          </div>
+        </div>
+        <div class="mt-2"><strong>Status atual:</strong> ${item.status || '-' }</div>
+      `;
+    }
+    // mostra botão de salvar status apenas para atividades
+    saveStatusBtn.classList.remove('d-none');
+    saveStatusBtn.removeAttribute('aria-hidden');
+  } else if (type === 'note') {
+    const item = (notes[date] || [])[idx];
+    if (!item) { html = '<div class="text-muted">Nota não encontrada.</div>'; }
+    else {
+      html = `
+        <div class="mb-2"><strong>Hora:</strong> ${item.time || '-'} </div>
+        <div class="mb-2"><strong>Título:</strong> ${item.title || '-'} </div>
+        <div class="mb-2"><strong>Descrição:</strong> ${item.description || '-'} </div>
+      `;
+    }
+    saveStatusBtn.classList.add('d-none');
+    saveStatusBtn.setAttribute('aria-hidden', 'true');
+  }
+
+  eventDetailsBody.innerHTML = html;
+
+  // vincula listener ao botão 'Visualizar' — usa alerta simples conforme solicitado
+  const viewLink = document.getElementById('viewActivityLink');
+  if (viewLink) {
+    viewLink.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      alert('menu de atividades extrajudiciais');
+    });
+  }
+
+  eventDetails.classList.remove('d-none');
+  eventDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+} 
+
+
+
+function hideEventDetails() {
+  currentDetail = null;
+  eventDetails.classList.add('d-none');
+}
+
+function deleteCurrentEvent() {
+  if (!currentDetail) return;
+  const { type, date, idx } = currentDetail;
+  if (!confirm('Confirma exclusão deste evento?')) return;
+
+  if (type === 'schedule') {
+    if (!schedules[date]) return;
+    schedules[date].splice(idx, 1);
+    if (schedules[date].length === 0) delete schedules[date];
+    localStorage.setItem('schedules', JSON.stringify(schedules));
+  } else if (type === 'activity') {
+    if (!activities[date]) return;
+    activities[date].splice(idx, 1);
+    if (activities[date].length === 0) delete activities[date];
+    localStorage.setItem('activities', JSON.stringify(activities));
+  } else if (type === 'note') {
+    if (!notes[date]) return;
+    notes[date].splice(idx, 1);
+    if (notes[date].length === 0) delete notes[date];
+    localStorage.setItem('notes', JSON.stringify(notes));
+  }
+
+  renderCalendar(currentDate, calendarGrid, currentMonthYear);
+  renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
+  hideEventDetails();
+}
+
+// Delegation: abrir painel ao clicar em qualquer badge
+document.addEventListener('click', (e) => {
+  const sched = e.target.closest('.schedule-badge');
+  if (sched) { showEventDetails('schedule', sched.dataset.date, Number(sched.dataset.index)); return; }
+  const act = e.target.closest('.activity-badge');
+  if (act) { showEventDetails('activity', act.dataset.date, Number(act.dataset.index)); return; }
+  const note = e.target.closest('.note-badge');
+  if (note) { showEventDetails('note', note.dataset.date, Number(note.dataset.index)); return; }
+});
+
+// Keyboard accessibility (Enter / Space)
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const focused = document.activeElement;
+    if (focused && (focused.classList.contains('schedule-badge') || focused.classList.contains('activity-badge') || focused.classList.contains('note-badge'))) {
+      focused.click();
+      e.preventDefault();
+    }
+  }
+});
+
+closeDetailsBtn.addEventListener('click', () => {
+  hideEventDetails();
+  // garante que o botão de salvar status volte a estado oculto
+  saveStatusBtn.classList.add('d-none');
+  saveStatusBtn.setAttribute('aria-hidden', 'true');
+});
+deleteEventBtn.addEventListener('click', deleteCurrentEvent);
+saveStatusBtn.addEventListener('click', saveActivityStatus);
 
 // Initial render
 renderCalendar(currentDate, calendarGrid, currentMonthYear);

@@ -150,3 +150,26 @@
         padding: 2px 3px;
     }
 }
+
+/* --- Event details panel --- */
+#eventDetails { border-left: 4px solid #0d6efd; }
+#eventDetails .card-header { gap: 1rem; }
+#eventDetailsBody { font-size: 0.95rem; line-height: 1.45; }
+#eventDetailsBody .mb-2 { margin-bottom: 0.5rem; }
+
+/* activity status */
+.activity-badge.activity-done {
+    background-color: #e9f7ef;
+    color: #1e6b2b;
+    border-color: #c6ebd0;
+    opacity: 0.9;
+}
+.status-control .form-select-sm { height: 34px; }
+.view-activity-link { white-space: nowrap; }
+.view-activity-link:focus { outline: 3px solid rgba(13,110,253,0.15); border-radius: 4px; }
+
+@media (max-width: 768px) {
+  #eventDetails { margin-top: .5rem; }
+  #eventDetails .btn-group { gap: .25rem; }
+}
+
