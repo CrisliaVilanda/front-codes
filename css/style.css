@@ -192,4 +192,51 @@
 .hearing-badge:hover { background-color: #e2f0ff; }
 .hearing-badge.hearing-done { background-color: #eef9f0; color: #1e6b2b; border-color: #d4edd6; text-decoration: line-through; opacity: 0.95; }
 
+/* --- Sidebar / aside (accessible lateral menu) --- */
+.app-sidebar {
+  position: fixed;
+  left: 12px;
+  top: 20px;
+  height: calc(100vh - 40px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,250,250,0.94));
+  border-radius: 12px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  z-index: 1040;
+  width: 72px; /* collapsed */
+  transition: width 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  box-shadow: 0 4px 18px rgba(10,20,30,0.06);
+  outline: none;
+}
+.app-sidebar:focus { box-shadow: 0 6px 26px rgba(10,20,30,0.12); }
+.app-sidebar.expanded { width: 200px; }
+.app-sidebar.collapsed { width: 72px; }
+.app-sidebar .brand { display: flex; gap: 8px; align-items: center; padding: 6px; }
+.app-sidebar .brand .brand-text { font-weight: 600; color: #0b5ed7; display: none; }
+.app-sidebar.expanded .brand .brand-text { display: inline-block; }
+.app-sidebar .nav { margin-top: 6px; display:flex; flex-direction:column; gap:6px; }
+.app-sidebar .nav-link { display:flex; gap:10px; align-items:center; padding:8px 10px; border-radius:8px; color: #123; text-decoration: none; }
+.app-sidebar .nav-link .sidebar-label { display: none; }
+.app-sidebar.expanded .nav-link .sidebar-label { display: inline-block; }
+.app-sidebar .nav-link .bi { font-size: 1.05rem; color: #0b5ed7; }
+.app-sidebar .nav-link.active { background: rgba(0,115,183,0.06); box-shadow: inset 0 0 0 1px rgba(11,94,183,0.04); }
+.app-sidebar .nav-link:focus-visible { box-shadow: 0 0 0 4px rgba(0,115,183,0.12); }
+
+/* container spacing when sidebar visible on wide screens */
+.container.with-sidebar { margin-left: 220px; transition: margin-left 220ms ease; }
+
+@media (max-width: 767.98px) {
+  .app-sidebar { left: 12px; top: 12px; height: auto; width: 64px; border-radius: 10px; }
+  .app-sidebar.expanded { width: 92%; left: 4%; right: 4%; top: 12px; height: auto; }
+  .container.with-sidebar { margin-left: 0; }
+}
+
+/* small helper for the toggle */
+#sidebarToggle { background: transparent; border: 0; color: #0b5ed7; padding: 6px; border-radius: 6px; }
+#sidebarToggle:focus { box-shadow: 0 0 0 4px rgba(0,115,183,0.12); }
+
+
 

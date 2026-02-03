@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Menu lateral — Minha Agenda (componente)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- usa o CSS do projeto para manter aparência consistente -->
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* pequenas ajustes para demo isolada */
+    body { min-height:100vh; display:flex; gap:1rem; }
+    main.demo-area { flex:1; padding:2rem; }
+    .demo-box { height:320px; background:linear-gradient(180deg,#fff,#f8fafc); border-radius:8px; box-shadow:0 6px 18px rgba(10,20,30,0.04); padding:1rem; }
+    /* ensure aside appears above content on small screens */
+    @media (max-width:768px) { .app-sidebar { position:fixed; z-index:1060; } }
+  </style>
+</head>
+<body class="bg-light">
+
+  <aside id="appSidebar" class="app-sidebar collapsed" role="complementary" aria-label="Menu lateral do aplicativo" tabindex="0">
+    <div class="brand">
+      <i class="bi bi-calendar-event fs-4 text-primary" aria-hidden="true"></i>
+      <span class="brand-text sidebar-label">Agenda</span>
+      <button id="sidebarToggle" class="ms-auto" aria-expanded="false" aria-controls="appSidebar" title="Alternar menu"><i class="bi bi-list" aria-hidden="true"></i><span class="visually-hidden">Alternar menu</span></button>
+    </div>
+
+    <nav class="nav" aria-label="Navegação principal">
+      <a href="index.html#minhaAgenda" class="nav-link sidebar-link" id="sidebarCalendar"><i class="bi bi-calendar2-event"></i><span class="sidebar-label"> Calendário</span></a>
+      <a href="index.html#calendarGrid2" class="nav-link"><i class="bi bi-gavel"></i><span class="sidebar-label"> Minhas audiências</span></a>
+      <a href="observacoes.html" class="nav-link"><i class="bi bi-pin-angle"></i><span class="sidebar-label"> Observações</span></a>
+      <a href="index.html#eventDetails" class="nav-link"><i class="bi bi-info-circle"></i><span class="sidebar-label"> Detalhes</span></a>
+    </nav>
+
+    <div class="mt-auto">
+      <small class="text-muted d-block text-center small">v0.1 • componente</small>
+    </div>
+  </aside>
+
+  <main class="demo-area">
+    <h3>Demo: menu lateral (componente)</h3>
+    <p class="text-muted">Este arquivo contém apenas o <code>&lt;aside&gt;</code> reutilizável e o script necessário — copie o markup/JS para sua página principal se quiser integrar.</p>
+
+    <div class="row gy-3">
+      <div class="col-md-6">
+        <div id="minhaAgenda" class="demo-box">
+          <h5>Minha Agenda (ancora)</h5>
+          <p class="small text-muted">Se você abrir <code>index.html</code> e clicar em "Calendário" o comportamento será o mesmo — este é um exemplo isolado.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="calendarGrid2" class="demo-box">
+          <h5>Minhas audiências (ancora)</h5>
+          <p class="small text-muted">Links do menu apontam para as seções correspondentes nas páginas do projeto.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Script do componente: comportamento acessível, toggle + persistência + destaque -->
+  <script>
+    (function(){
+      const sidebar = document.getElementById('appSidebar');
+      const toggle = document.getElementById('sidebarToggle');
+      const link = document.querySelector('.sidebar-link');
+      const container = document.querySelector('.demo-area');
+      if (!sidebar) return;
+
+      const mq = window.matchMedia('(min-width:768px)');
+      const saved = localStorage.getItem('sidebarExpanded');
+      const defaultExpanded = mq.matches;
+      let expanded = saved === null ? defaultExpanded : saved === 'true';
+
+      function applyState() {
+        sidebar.classList.toggle('expanded', expanded);
+        sidebar.classList.toggle('collapsed', !expanded);
+        if (toggle) toggle.setAttribute('aria-expanded', String(!!expanded));
+        if (container) container.classList.toggle('with-sidebar', expanded && window.innerWidth >= 768);
+      }
+      applyState();
+
+      function setSidebarExpanded(v) {
+        expanded = !!v;
+        localStorage.setItem('sidebarExpanded', String(expanded));
+        applyState();
+      }
+
+      if (toggle) {
+        toggle.addEventListener('click', (ev) => { ev.preventDefault(); setSidebarExpanded(!expanded); });
+        toggle.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); setSidebarExpanded(!expanded); } });
+      }
+
+      if (link) link.addEventListener('click', (ev) => { /* smooth-scroll handled by browser when linking to other pages */ link.classList.add('active'); setTimeout(()=>link.classList.remove('active'),800); });
+
+      // highlight when the section is visible (only works in this demo page)
+      try {
+        const target = document.getElementById('minhaAgenda');
+        if (target) {
+          const io = new IntersectionObserver(entries => {
+            entries.forEach(en => link.classList.toggle('active', en.isIntersecting));
+          }, { threshold: 0.35 });
+          io.observe(target);
+        }
+      } catch (e) { /* noop */ }
+
+      // accessibility: close on escape when small
+      document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && window.innerWidth < 768 && expanded) setSidebarExpanded(false); });
+
+    })();
+  </script>
+
+</body>
+</html>

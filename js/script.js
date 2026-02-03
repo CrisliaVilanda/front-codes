@@ -197,7 +197,6 @@ function renderCalendar(date, gridElement, monthYearElement) {
 
   gridElement.innerHTML = days;
 }
-
 prevMonthBtn.addEventListener('click', () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar(currentDate, calendarGrid, currentMonthYear);
@@ -394,55 +393,18 @@ const eventDetailsDate = document.getElementById('eventDetailsDate');
 const eventDetailsBody = document.getElementById('eventDetailsBody');
 const closeDetailsBtn = document.getElementById('closeDetailsBtn');
 const deleteEventBtn = document.getElementById('deleteEventBtn');
-const saveStatusBtn = document.getElementById('saveStatusBtn');
 
 let currentDetail = null; // { type, date, index }
 let editingNote = null; // { date, idx } — usado quando estamos editando uma nota existente
 
-function showActivityStatusControl(item) {
-  // retorna HTML do select (usado apenas para atividades)
-  const status = item && item.status ? item.status : 'a realizar';
-  return `
-    <div class="mb-3 status-control">
-      <label for="activityStatusSelect" class="form-label">Status</label>
-      <div class="d-flex gap-2 align-items-center">
-        <select id="activityStatusSelect" class="form-select form-select-sm" style="max-width:200px">
-          <option value="a realizar" ${status === 'a realizar' ? 'selected' : ''}>a realizar</option>
-          <option value="realizada" ${status === 'realizada' ? 'selected' : ''}>realizada</option>
-        </select>
-        <small class="text-muted">Atualize e clique em "Salvar status"</small>
-      </div>
-    </div>
-  `;
-}
 
-function saveActivityStatus() {
-  if (!currentDetail || currentDetail.type !== 'activity') return;
-  const sel = document.getElementById('activityStatusSelect');
-  if (!sel) return;
-  const newStatus = sel.value;
-  const { date, idx } = currentDetail;
-  const item = (activities[date] || [])[idx];
-  if (!item) return;
-  item.status = newStatus;
-  localStorage.setItem('activities', JSON.stringify(activities));
-  // re-renderiza e atualiza o painel
-  renderCalendar(currentDate, calendarGrid, currentMonthYear);
-  renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
-  showEventDetails('activity', date, idx);
-  // feedback rápido
-  const alertEl = document.createElement('div');
-  alertEl.className = 'alert alert-success mt-2 mb-0 py-1';
-  alertEl.role = 'status';
-  alertEl.textContent = 'Status atualizado.';
-  eventDetailsBody.prepend(alertEl);
-  setTimeout(() => alertEl.remove(), 1800);
-}
+
+// Alteração de status para atividades removida — atividade permanece com status somente leitura.
 
 // atualiza showEventDetails (branch 'activity') para incluir o controle de status e mostrar o botão
 function showEventDetails(type, date, idx) {
   currentDetail = { type, date, idx };
-  eventDetailsTitle.textContent = (type === 'schedule') ? 'Agendamento' : (type === 'activity') ? 'Atividade' : 'Nota';
+  eventDetailsTitle.textContent = (type === 'schedule') ? 'Agendamento' : (type === 'activity') ? 'Atividade Extrajudicial' : 'Nota';
   eventDetailsDate.textContent = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'full' }).format(new Date(date));
 
   let html = '';
@@ -465,9 +427,7 @@ function showEventDetails(type, date, idx) {
         <div class="mt-2"><strong>Status atual:</strong> ${item.status || '-'}</div>
       `;
     }
-    // esconde controle de status quando não for atividade
-    saveStatusBtn.classList.add('d-none');
-    saveStatusBtn.setAttribute('aria-hidden', 'true');
+
   } else if (type === 'activity') {
     const item = (activities[date] || [])[idx];
     if (!item) { html = '<div class="text-muted">Atividade não encontrada.</div>'; }
@@ -476,7 +436,6 @@ function showEventDetails(type, date, idx) {
       html = `
         <div class="d-flex justify-content-between align-items-start">
           <div style="min-width:0; flex:1;">
-            ${showActivityStatusControl(item)}
             <div class="mb-2"><strong>Espécie:</strong> ${item.species || '-'} </div>
             <div class="mb-2"><strong>Titularidade:</strong> ${item.titularity || '-'} </div>
             <div class="mb-2"><strong>Núcleo:</strong> ${item.nucleo || '-'} </div>
@@ -489,9 +448,7 @@ function showEventDetails(type, date, idx) {
         <div class="mt-2"><strong>Status atual:</strong> ${item.status || '-' }</div>
       `;
     }
-    // mostra botão de salvar status apenas para atividades
-    saveStatusBtn.classList.remove('d-none');
-    saveStatusBtn.removeAttribute('aria-hidden');
+
   } else if (type === 'hearing') {
     const item = (hearings[date] || [])[idx];
     if (!item) { html = '<div class="text-muted">Audiência não encontrada.</div>'; }
@@ -504,9 +461,7 @@ function showEventDetails(type, date, idx) {
         <div class="mb-2"><strong>Descrição:</strong> ${item.description || '-'} </div>
       `;
     }
-    // esconder controle de status para audiências (não aplicável)
-    saveStatusBtn.classList.add('d-none');
-    saveStatusBtn.setAttribute('aria-hidden', 'true');
+
   } else if (type === 'note') {
     const item = (notes[date] || [])[idx];
     if (!item) { html = '<div class="text-muted">Nota não encontrada.</div>'; }
@@ -524,8 +479,6 @@ function showEventDetails(type, date, idx) {
         </div>
       `;
     }
-    saveStatusBtn.classList.add('d-none');
-    saveStatusBtn.setAttribute('aria-hidden', 'true');
   }
 
   eventDetailsBody.innerHTML = html;
@@ -623,13 +576,19 @@ document.addEventListener('keydown', (e) => {
 
 closeDetailsBtn.addEventListener('click', () => {
   hideEventDetails();
-  // garante que o botão de salvar status volte a estado oculto
-  saveStatusBtn.classList.add('d-none');
-  saveStatusBtn.setAttribute('aria-hidden', 'true');
 });
 deleteEventBtn.addEventListener('click', deleteCurrentEvent);
-saveStatusBtn.addEventListener('click', saveActivityStatus);
+
+// Simple Calendar menu: scroll to 'Minha Agenda' (single-link behavior)
+(function(){
+  const link = document.getElementById('calendarMenu');
+  const target = document.getElementById('minhaAgenda');
+  if (!link || !target) return;
+  link.addEventListener('click', (ev) => { ev.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+})();
 
 // Initial render
 renderCalendar(currentDate, calendarGrid, currentMonthYear);
 renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
+
+
