@@ -25,8 +25,8 @@
                 <button class="btn btn-success" id="newScheduleBtn">
                     <i class="bi bi-plus-lg me-1"></i> Novo Agendamento
                 </button>
-                <button class="btn btn-outline-primary" id="newHearingBtn"><i class="bi bi-gavel me-1"></i> Cadastrar
-                    audiência</button>
+                <button class="btn btn-outline-primary" id="newHearingBtn"><i class="bi bi-gavel me-1"></i> 
+                    Nova audiência</button>
                 <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="createEventDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -55,11 +55,14 @@
             <a href="index.html#minhaAgenda" class="nav-link sidebar-link" id="sidebarCalendar"><i
                     class="bi bi-calendar2-event"></i><span class="sidebar-label"> Calendário</span></a>
             <a href="index.html#calendarGrid2" class="nav-link"><i class="bi bi-gavel"></i><span class="sidebar-label">
-                    Minhas audiências</span></a>
+                    udiências</span></a>
             <a href="observacoes.html" class="nav-link"><i class="bi bi-pin-angle"></i><span class="sidebar-label">
                     Observações</span></a>
-            <a href="index.html#eventDetails" class="nav-link"><i class="bi bi-info-circle"></i><span
-                    class="sidebar-label"> Detalhes</span></a>
+            <a href="todas_audiencias.html" class="nav-link"><i class="bi bi-calendar2-event"></i><span
+                    class="sidebar-label">
+                    Ver todas as audiências</span></a>
+            <a href="atividades_realizadas.html" class="nav-link"><i class="bi bi-check-circle"></i><span class="sidebar-label">
+                    Atividades realizadas</span></a>
         </nav>
     </aside>
 
@@ -76,7 +79,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <h3 class="h5 mb-3 fw-bold">Minhas Audiências</h3>
+                <h3 class="h5 mb-3 fw-bold">udiências</h3>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <button class="btn btn-outline-secondary" id="prevMonth2"><i class="bi bi-chevron-left"></i>
                         Anterior</button>
@@ -136,11 +139,11 @@
                             <small class="text-muted" id="eventDetailsDate"></small>
                         </div>
                         <div class="btn-group">
+                            <button id="markDoneBtn" class="btn btn-outline-success btn-sm">Marcar como realizado</button>
                             <button class="btn btn-outline-secondary btn-sm" id="closeDetailsBtn">Fechar</button>
                             <button class="btn btn-outline-primary btn-sm d-none" id="saveStatusBtn"
                                 aria-hidden="true"><i class="bi bi-pencil-square me-1"></i> Salvar status</button>
-                            <button class="btn btn-danger btn-sm" id="deleteEventBtn"><i class="bi bi-trash"></i>
-                                Excluir</button>
+                            <button class="btn btn-danger btn-sm" id="deleteEventBtn"><i class="bi bi-trash"></i>Excluir</button>                            
                         </div>
                     </div>
                     <div class="card-body" id="eventDetailsBody">
@@ -163,6 +166,34 @@
                     </div>
                     <div class="modal-body">
                         <form id="scheduleForm">
+                             <div class="mb-3">
+                                <label for="scheduleSpeciesSelect" class="form-label">Espécie <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="scheduleSpeciesSelect" required>
+                                    <option value="">-- Selecione a espécie --</option>
+                                    <option value="Ordinário">Ordinário</option>
+                                    <option value="Extraordinário">Extraordinário</option>
+                                    <option value="Plantão">Plantão</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="defenderName" class="form-label">Nome do Defensor <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="defenderName"
+                                    placeholder="Digite o nome do defensor" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="scheduleTitularity" class="form-label">Titularidade/Designação <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="scheduleTitularity"
+                                    placeholder="Digite a titularidade/designação" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="scheduleNucleo" class="form-label">Núcleo <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="scheduleNucleo"
+                                    placeholder="Digite o núcleo" required>
+                            </div>
                             <div class="mb-3">
                                 <label for="scheduleDate" class="form-label">Data <span
                                         class="text-danger">*</span></label>
@@ -172,13 +203,7 @@
                                 <label for="scheduleTime" class="form-label">Hora <span
                                         class="text-danger">*</span></label>
                                 <input type="time" class="form-control" id="scheduleTime" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="defenderName" class="form-label">Nome do Defensor <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="defenderName"
-                                    placeholder="Digite o nome do defensor" required>
-                            </div>
+                            </div>                            
                             <div class="mb-3">
                                 <label for="assistedSelect" class="form-label">Assistido <span
                                         class="text-danger">*</span></label>
@@ -233,6 +258,12 @@
                                 </select>
                             </div>
                             <div class="mb-3">
+                                <label for="activityDefender" class="form-label">Defensor <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="activityDefender"
+                                    placeholder="Digite o nome do defensor" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="activityTitularity" class="form-label">Titularidade/Designação <span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="activityTitularity"
@@ -248,6 +279,10 @@
                                 <label for="activityDate" class="form-label">Data da Atividade <span
                                         class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="activityDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="activityTime" class="form-label">Hora</label>
+                                <input type="time" class="form-control" id="activityTime">
                             </div>
                             <div class="mb-3">
                                 <label for="activityDescription" class="form-label">Atividade <span
@@ -275,13 +310,40 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title" id="hearingModalLabel"><i class="bi bi-gavel me-2"></i>Cadastrar
-                            Audiência</h5>
+                        <h5 class="modal-title" id="hearingModalLabel"><i class="bi bi-gavel me-2"></i>
+                            NovaAudiência</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="hearingForm">
+                            <div class="mb-3">
+                                <label for="hearingSpecies" class="form-label">Espécie <span
+                                        class="text-danger">*</span></label>                                
+                                <select class="form-select" id="hearingSpecies" required>
+                                    <option value="">-- Selecione a espécie --</option>
+                                    <option value="Ordinário">Ordinário</option>
+                                    <option value="Extraordinário">Extraordinário</option>
+                                    <option value="Plantão">Plantão</option>
+                                </select>
+                            </div>                            
+                            <div class="mb-3">
+                                <label for="hearingDefender" class="form-label">Nome do Defensor</label>
+                                <input type="text" class="form-control" id="hearingDefender"
+                                    placeholder="Digite o nome do defensor">
+                            </div>                                                      
+                            <div class="mb-3">
+                                <label for="hearingActivityTitularity" class="form-label">Titularidade/Designação * <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="hearingActivityTitularity"
+                                    placeholder="Digite a Titularidade/Designação" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="hearingNucleus" class="form-label">Núcleo* <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="hearingNucleus"
+                                    placeholder="Digite o Núcleo" required>
+                            </div>
                             <div class="mb-3">
                                 <label for="hearingDate" class="form-label">Data <span
                                         class="text-danger">*</span></label>
@@ -291,13 +353,17 @@
                                 <label for="hearingTime" class="form-label">Hora</label>
                                 <input type="time" class="form-control" id="hearingTime">
                             </div>
-
-
-
-                            <div class="mb-3">
-                                <label for="hearingDefender" class="form-label">Nome do Defensor</label>
-                                <input type="text" class="form-control" id="hearingDefender"
-                                    placeholder="Digite o nome do defensor">
+                              <div class="mb-3">
+                                <label for="hearingAssistedSelect" class="form-label">Assistido <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="hearingAssistedSelect" required>
+                                    <option value="">-- Selecione um assistido --</option>
+                                    <option value="João Silva">João Silva</option>
+                                    <option value="Maria Santos">Maria Santos</option>
+                                    <option value="Pedro Oliveira">Pedro Oliveira</option>
+                                    <option value="Ana Costa">Ana Costa</option>
+                                    <option value="Lucas Ferreira">Lucas Ferreira</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="hearingProcess" class="form-label">Número do processo <span
@@ -306,13 +372,13 @@
                                     placeholder="0000000-00.0000.0.00.0000" required>
                             </div>
                             <div class="mb-3">
-                                <label for="hearingDescription" class="form-label">Descrição</label>
+                                <label for="hearingDescription" class="form-label">Anotações / observações sobre a audiência</label>
                                 <textarea class="form-control" id="hearingDescription" rows="2"
                                     placeholder="Informações adicionais"></textarea>
-                            </div>
+                                </div>
 
                             <div class="alert alert-warning small mb-3" role="alert">
-                                <strong>Atenção:</strong> Esta atividade será cadastrada com status de <em>a
+                                <strong>Atenção:</strong> Esta audiência será cadastrada com status de <em>a
                                     realizar</em>.
                             </div>
 
@@ -356,6 +422,10 @@
                                 <label for="noteDescription" class="form-label">Descrição</label>
                                 <textarea class="form-control" id="noteDescription" rows="3"></textarea>
                             </div>
+                             <div class="mb-3">
+                                <label for="noteCreatedby" class="form-label">Criado por</label>
+                                <input type="text" class="form-control" id="noteCreatedby">
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -372,53 +442,54 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
         <script src="js/script.js"></script>
+        <script src="js/status.js"></script>
         <script>
-      (function(){
-        const sidebar = document.getElementById('appSidebar');
-        const toggle = document.getElementById('sidebarToggle');
-        const link = document.querySelector('.sidebar-link');
-        const container = document.querySelector('.container');
-        if (!sidebar) return;
+            (function () {
+                const sidebar = document.getElementById('appSidebar');
+                const toggle = document.getElementById('sidebarToggle');
+                const link = document.querySelector('.sidebar-link');
+                const container = document.querySelector('.container');
+                if (!sidebar) return;
 
-        const mq = window.matchMedia('(min-width:768px)');
-        const saved = localStorage.getItem('sidebarExpanded');
-        const defaultExpanded = mq.matches;
-        let expanded = saved === null ? defaultExpanded : saved === 'true';
+                const mq = window.matchMedia('(min-width:768px)');
+                const saved = localStorage.getItem('sidebarExpanded');
+                const defaultExpanded = mq.matches;
+                let expanded = saved === null ? defaultExpanded : saved === 'true';
 
-        function applyState() {
-          sidebar.classList.toggle('expanded', expanded);
-          sidebar.classList.toggle('collapsed', !expanded);
-          if (toggle) toggle.setAttribute('aria-expanded', String(!!expanded));
-          if (container) container.classList.toggle('with-sidebar', expanded && window.innerWidth >= 768);
-        }
-        applyState();
+                function applyState() {
+                    sidebar.classList.toggle('expanded', expanded);
+                    sidebar.classList.toggle('collapsed', !expanded);
+                    if (toggle) toggle.setAttribute('aria-expanded', String(!!expanded));
+                    if (container) container.classList.toggle('with-sidebar', expanded && window.innerWidth >= 768);
+                }
+                applyState();
 
-        function setSidebarExpanded(v) {
-          expanded = !!v;
-          localStorage.setItem('sidebarExpanded', String(expanded));
-          applyState();
-        }
+                function setSidebarExpanded(v) {
+                    expanded = !!v;
+                    localStorage.setItem('sidebarExpanded', String(expanded));
+                    applyState();
+                }
 
-        if (toggle) {
-          toggle.addEventListener('click', (ev) => { ev.preventDefault(); setSidebarExpanded(!expanded); });
-          toggle.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); setSidebarExpanded(!expanded); } });
-        }
+                if (toggle) {
+                    toggle.addEventListener('click', (ev) => { ev.preventDefault(); setSidebarExpanded(!expanded); });
+                    toggle.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); setSidebarExpanded(!expanded); } });
+                }
 
-        if (link) link.addEventListener('click', (ev) => { link.classList.add('active'); setTimeout(()=>link.classList.remove('active'),800); });
+                if (link) link.addEventListener('click', (ev) => { link.classList.add('active'); setTimeout(() => link.classList.remove('active'), 800); });
 
-        try {
-          const target = document.getElementById('minhaAgenda');
-          if (target) {
-            const io = new IntersectionObserver(entries => {
-              entries.forEach(en => link.classList.toggle('active', en.isIntersecting));
-            }, { threshold: 0.35 });
-            io.observe(target);
-          }
-        } catch (e) { /* noop */ }
+                try {
+                    const target = document.getElementById('minhaAgenda');
+                    if (target) {
+                        const io = new IntersectionObserver(entries => {
+                            entries.forEach(en => link.classList.toggle('active', en.isIntersecting));
+                        }, { threshold: 0.35 });
+                        io.observe(target);
+                    }
+                } catch (e) { /* noop */ }
 
-        document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && window.innerWidth < 768 && expanded) setSidebarExpanded(false); });
-      })();
-    </script>
+                document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && window.innerWidth < 768 && expanded) setSidebarExpanded(false); });
+            })();
+        </script>
 </body>
 
 </html>

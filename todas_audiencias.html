@@ -11,7 +11,7 @@
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="bg-light">
@@ -43,6 +43,9 @@
           Observações</span></a>
       <a href="todas_audiencias.html" class="nav-link"><i class="bi bi-calendar2-event"></i><span class="sidebar-label">
           Ver todas as audiências</span></a>
+      <a href="atividades_realizadas.html" class="nav-link active"><i class="bi bi-list-check"></i><span
+          class="sidebar-label">
+          Atividades realizadas</span></a>
     </nav>
   </aside>
 
@@ -52,21 +55,26 @@
         <div class="card shadow-sm border-0 editor-card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-start mb-3">
-              <h5 class="mb-0">Visualizar todas as audiências</h5>              
+              <h5 class="mb-0">Visualizar todas as audiências</h5>
             </div>
             <table class="table table-sm table-hover align-middle">
-                <thead class="table-light small">
-                  <tr>
-                    <th>Data</th>
-                    <th>Hora</th>
-                    <th>Processo</th>
-                    <th>Descrição</th>
-                  </tr>
-                </thead>
-                <tbody id="audienciasListTbody">                  
-                    <tr><td colspan="4" class="text-muted small">Nenhum registro cadastrado.</td></tr>
-                </tbody>
-              </table>
+              <thead class="table-light small">
+                <tr>
+                  <th>Defensor</th>
+                  <th>Processo</th>
+                  <th>Data</th>
+                  <th>Hora</th>
+                  <th>Núcleo/vara</th>
+                  <th>Espécie</th>
+                  <th>status</th>
+                </tr>
+              </thead>
+              <tbody id="audienciasListTbody">
+                <tr>
+                  <td colspan="4" class="text-muted small">Nenhum registro cadastrado.</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -125,8 +133,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-  <script src="js/script.js"></script>
-</body>
+  <!-- <script src="js/script.js"></script> -->
+  <script src="js/script_showaudiencias.js"></script>
 </body>
 
 </html>

@@ -2,45 +2,28 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Menu lateral — Minha Agenda (componente)</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda App</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <!-- usa o CSS do projeto para manter aparência consistente -->
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    /* pequenas ajustes para demo isolada */
-    body {
-      min-height: 100vh;
-      display: flex;
-      gap: 1rem;
-    }
-
-    main.demo-area {
-      flex: 1;
-      padding: 2rem;
-    }
-
-    .demo-box {
-      height: 320px;
-      background: linear-gradient(180deg, #fff, #f8fafc);
-      border-radius: 8px;
-      box-shadow: 0 6px 18px rgba(10, 20, 30, 0.04);
-      padding: 1rem;
-    }
-
-    /* ensure aside appears above content on small screens */
-    @media (max-width:768px) {
-      .app-sidebar {
-        position: fixed;
-        z-index: 1060;
-      }
-    }
-  </style>
 </head>
 
 <body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="index.html"><i class="bi bi-calendar-event me-2"></i>Visualizar
+        todas as Atividades realizadas</a>
+      <div class="ms-auto">
+        <a class="btn btn-outline-secondary" href="index.html"><i class="bi bi-arrow-left-circle me-1"></i> Voltar</a>
+      </div>
+    </div>
+  </nav>
 
   <aside id="appSidebar" class="app-sidebar collapsed" role="complementary" aria-label="Menu lateral do aplicativo"
     tabindex="0">
@@ -51,7 +34,6 @@
         title="Alternar menu"><i class="bi bi-list" aria-hidden="true"></i><span class="visually-hidden">Alternar
           menu</span></button>
     </div>
-
     <nav class="nav" aria-label="Navegação principal">
       <a href="index.html#minhaAgenda" class="nav-link sidebar-link" id="sidebarCalendar"><i
           class="bi bi-calendar2-event"></i><span class="sidebar-label"> Calendário</span></a>
@@ -63,42 +45,43 @@
           class="sidebar-label">
           Atividades realizadas</span></a>
     </nav>
-
-    <div class="mt-auto">
-      <small class="text-muted d-block text-center small">v0.1 • componente</small>
-    </div>
   </aside>
 
-  <main class="demo-area">
-    <h3>Demo: menu lateral (componente)</h3>
-    <p class="text-muted">Este arquivo contém apenas o <code>&lt;aside&gt;</code> reutilizável e o script necessário —
-      copie o markup/JS para sua página principal se quiser integrar.</p>
+  <main class="container mb-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="card shadow-sm border-0 editor-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <h5 class="mb-0">Visualizar todas as Atividades realizadas</h5>
+            </div>
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Tipo</th>
+                  <th>Descrição</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="realizadosTbody"></tbody>
+            </table>
 
-    <div class="row gy-3">
-      <div class="col-md-6">
-        <div id="minhaAgenda" class="demo-box">
-          <h5>Minha Agenda (ancora)</h5>
-          <p class="small text-muted">Se você abrir <code>index.html</code> e clicar em "Calendário" o comportamento
-            será o mesmo — este é um exemplo isolado.</p>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div id="calendarGrid2" class="demo-box">
-          <h5>Minhas audiências (ancora)</h5>
-          <p class="small text-muted">Links do menu apontam para as seções correspondentes nas páginas do projeto.</p>
+            <script src="js/atividades_realizadas.js"></script>
+          </div>
         </div>
       </div>
     </div>
-
   </main>
 
-  <!-- Script do componente: comportamento acessível, toggle + persistência + destaque -->
+
+  <!-- scripts -->
   <script>
     (function () {
       const sidebar = document.getElementById('appSidebar');
       const toggle = document.getElementById('sidebarToggle');
       const link = document.querySelector('.sidebar-link');
-      const container = document.querySelector('.demo-area');
+      const container = document.querySelector('.container');
       if (!sidebar) return;
 
       const mq = window.matchMedia('(min-width:768px)');
@@ -125,9 +108,8 @@
         toggle.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); setSidebarExpanded(!expanded); } });
       }
 
-      if (link) link.addEventListener('click', (ev) => { /* smooth-scroll handled by browser when linking to other pages */ link.classList.add('active'); setTimeout(() => link.classList.remove('active'), 800); });
+      if (link) link.addEventListener('click', (ev) => { link.classList.add('active'); setTimeout(() => link.classList.remove('active'), 800); });
 
-      // highlight when the section is visible (only works in this demo page)
       try {
         const target = document.getElementById('minhaAgenda');
         if (target) {
@@ -138,12 +120,14 @@
         }
       } catch (e) { /* noop */ }
 
-      // accessibility: close on escape when small
       document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && window.innerWidth < 768 && expanded) setSidebarExpanded(false); });
-
     })();
   </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+  <!-- <script src="js/script.js"></script> -->
+  <script src="js/script_showaudiencias.js"></script>
 </body>
 
 </html>
