@@ -26,7 +26,7 @@ let schedules = JSON.parse(localStorage.getItem('schedules')) || {};
 let activities = JSON.parse(localStorage.getItem('activities')) || {};
 let notes = JSON.parse(localStorage.getItem('notes')) || {};
 // Audiências (dados separados das atividades)
-let hearings = JSON.parse(localStorage.getItem('hearings')) || {}; 
+let hearings = JSON.parse(localStorage.getItem('hearings')) || {};
 
 // Modal elements - Agendamento
 const newScheduleBtn = document.getElementById('newScheduleBtn');
@@ -204,7 +204,7 @@ function renderCalendar(date, gridElement, monthYearElement, mode) {
       if (scheduledCount) scheduleSummaryHTML += `<div class="schedule-summary schedule-agendado" aria-hidden="true">Atendimento(s) agendados: ${scheduledCount}</div>`;
       if (realizedCount) scheduleSummaryHTML += `<div class="schedule-summary schedule-realizado" aria-hidden="true">Atendimento(s) Realizados: ${realizedCount}</div>`;
 
-      let scheduleHTML = daySchedules.map((schedule, idx) => 
+      let scheduleHTML = daySchedules.map((schedule, idx) =>
         `<div class="schedule-badge" data-type="schedule" data-date="${dateStr}" 
         data-index="${idx}" role="button" tabindex="0" aria-label="Agendamento 
         ${schedule.time} ${schedule.defender} ${schedule.processNumber || ''}">
@@ -223,7 +223,7 @@ function renderCalendar(date, gridElement, monthYearElement, mode) {
         <div class="notes-container">${noteHTML}</div>
         <div class="activities-container">${activityHTML}</div>
       </div>`;
-    } 
+    }
   }
 
   // Next month days
@@ -239,7 +239,7 @@ function renderCalendar(date, gridElement, monthYearElement, mode) {
   gridElement.innerHTML = days;
 }
 prevMonthBtn.addEventListener('click', () => {
-   agendaAtendimentos.currentDate.setMonth(
+  agendaAtendimentos.currentDate.setMonth(
     agendaAtendimentos.currentDate.getMonth() - 1
   );
   renderCalendar(
@@ -419,9 +419,9 @@ saveHearingBtn.addEventListener('click', () => {
   const status = 'a realizar';
 
   if (!hearings[date]) hearings[date] = [];
-  hearings[date].push({ 
-    time, defender, processNumber, 
-    description, status, titularity, 
+  hearings[date].push({
+    time, defender, processNumber,
+    description, status, titularity,
     nucleus, species, assisted
   });
   localStorage.setItem('hearings', JSON.stringify(hearings));
@@ -488,9 +488,9 @@ let editingNote = null; // { date, idx } — usado quando estamos editando uma n
 function showEventDetails(type, date, idx) {
   currentDetail = { type, date, idx };
   eventDetailsTitle.textContent = (type === 'schedule') ? 'Agendamentos'
-   : (type === 'activity') ? 'Atividades Extrajudicial' 
-   : (type === 'hearing') ? 'Audiências'
-   : 'Nota';
+    : (type === 'activity') ? 'Atividades Extrajudicial'
+      : (type === 'hearing') ? 'Audiências'
+        : 'Nota';
   eventDetailsDate.textContent = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'full' }).format(new Date(date));
 
   let html = '';
@@ -531,7 +531,7 @@ function showEventDetails(type, date, idx) {
             <div class="mb-2"><strong>Titularidade:</strong> ${item.titularity || '-'} </div>
             <div class="mb-2"><strong>Núcleo:</strong> ${item.nucleo || '-'} </div>
             <div class="mb-2"><strong>Descrição:</strong> ${item.description || '-'} </div>
-            <div class="mt-2"><strong>Status atual:</strong> ${item.status || '-' }</div>
+            <div class="mt-2"><strong>Status atual:</strong> ${item.status || '-'}</div>
           </div>
           <div class="ms-3 text-end">
             <a href="#" id="viewActivityLink" class="btn btn-link btn-sm view-activity-link" aria-label="Visualizar atividade">Visualizar</a>
@@ -545,15 +545,22 @@ function showEventDetails(type, date, idx) {
     if (!item) { html = '<div class="text-muted">Audiência não encontrada.</div>'; }
     else {
       html = `
-        <div class="mb-2"><strong>Hora:</strong> ${item.time || '-'} </div>
-        <div class="mb-2"><strong>Defensor:</strong> ${item.defender || '-'} </div>        
-        <div class="mb-2"><strong>Espécie:</strong> ${item.species || '-'}</div>
-        <div class="mb-2"><strong>Titularidade:</strong> ${item.titularity || '-'} </div>
-        <div class="mb-2"><strong>Núcleo:</strong> ${item.nucleus || '-'} </div>
-        <div class="mb-2"><strong>Número do processo:</strong> ${item.processNumber || '-'} </div>
-        <div class="mb-2"><strong>Assistido:</strong> ${item.assisted || '-'} </div>
-        <div class="mb-2"><strong>Status:</strong> ${item.status || '-'} </div>
-        <div class="mb-2"><strong>Descrição:</strong> ${item.description || '-'} </div>
+      <div class="d-flex justify-content-between align-items-start">
+        <div style="min-width:0; flex:1;">
+          <div class="mb-2"><strong>Hora:</strong> ${item.time || '-'} </div>
+          <div class="mb-2"><strong>Defensor:</strong> ${item.defender || '-'} </div>        
+          <div class="mb-2"><strong>Espécie:</strong> ${item.species || '-'}</div>
+          <div class="mb-2"><strong>Titularidade:</strong> ${item.titularity || '-'} </div>
+          <div class="mb-2"><strong>Núcleo:</strong> ${item.nucleus || '-'} </div>
+          <div class="mb-2"><strong>Número do processo:</strong> ${item.processNumber || '-'} </div>
+          <div class="mb-2"><strong>Assistido:</strong> ${item.assisted || '-'} </div>
+          <div class="mb-2"><strong>Status:</strong> ${item.status || '-'} </div>
+          <div class="mb-2"><strong>Descrição:</strong> ${item.description || '-'} </div>
+          </div>
+          <div class="ms-3 text-end">
+            <a href="#" id="viewAudicenciaink" class="btn btn-link btn-sm view-activity-link" aria-label="Visualizar audiência">Visualizar</a>
+          </div>
+        </div> 
       `;
     }
 
@@ -596,7 +603,13 @@ function showEventDetails(type, date, idx) {
       alert('acessando tela do processo');
     });
   }
-
+ const viewAudicenciaink = document.getElementById('viewAudicenciaink');
+  if (viewAudicenciaink) {
+    viewAudicenciaink.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      alert('acessando tela do processo');
+    });
+  }
   const editNoteLink = document.getElementById('editNoteLink');
   if (editNoteLink) {
     editNoteLink.addEventListener('click', (ev) => {
@@ -607,7 +620,7 @@ function showEventDetails(type, date, idx) {
 
   eventDetails.classList.remove('d-none');
   eventDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
-} 
+}
 
 
 
@@ -677,7 +690,7 @@ closeDetailsBtn.addEventListener('click', () => {
 deleteEventBtn.addEventListener('click', deleteCurrentEvent);
 
 // Simple Calendar menu: scroll to 'Minha Agenda' (single-link behavior)
-(function(){
+(function () {
   const link = document.getElementById('calendarMenu');
   const target = document.getElementById('minhaAgenda');
   if (!link || !target) return;
@@ -711,7 +724,7 @@ function marcarComoRealizado(type, date, idx) {
   store[date][idx].status = 'realizado';
 
   localStorage.setItem(key, JSON.stringify(store));
-  
+
 }
 document.getElementById('markDoneBtn')?.addEventListener('click', () => {
   if (!currentDetail) return;
@@ -728,7 +741,7 @@ document.getElementById('markDoneBtn')?.addEventListener('click', () => {
   // renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
 
   alert('Status atualizado para realizado');
-  
+
 
 });
 
@@ -752,6 +765,4 @@ renderCalendar(
 // renderCalendar(currentDate2, calendarGrid2, currentMonthYear2);
 
 
-
-
-
+// script aviso de protótipo
